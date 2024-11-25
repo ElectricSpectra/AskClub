@@ -58,10 +58,18 @@ googleLoginButton.addEventListener('click', loginWithGoogle);
 // Check if user is already signed in
 onAuthStateChanged(auth, (user) => {
     if (user) {
+        console.log("User already signed in:", user.displayName);
         updateUI(user);
+
+        // Redirect if not already on mainpage.html
+        if (window.location.pathname !== "/mainpage.html") {
+            window.location.href = `mainpage.html?timestamp=${new Date().getTime()}`;
+        }
+    } else {
+        console.log("No user signed in.");
+        updateUI(null);
     }
 });
-
 // Initialize Messaging
 const messaging = getMessaging(app);
 
