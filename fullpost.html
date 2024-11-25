@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="sidebar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Details</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Q/A platform styles -->
+    <link rel="stylesheet" href="styles/style.css"> <!-- Chatbot styles -->
+</head>
+<body>
+    
+    <div id="app" class="main-container">
+        <div class="content-container">
+            <header>
+                <h1>Post Details</h1>
+                <button onclick="goBack()">Back to Main Page</button>
+            </header>
+
+            <!-- Post content will be dynamically loaded here -->
+            <div id="postDetails" class="post-details-container">
+                <!-- Post details and answers will be rendered here via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Chatbot container -->
+        <div id="chatbot">
+            <div id="chat-header">VidyaAI</div> <!-- Add this header -->
+            <div id="chat-window">
+                <div id="chat-messages"></div>
+            </div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message here..." />
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="fullpost.js"></script> <!-- Main page logic -->
+    <script src="scripts/script.js" defer></script> <!-- Chatbot logic -->
+    <script>
+        // Function to navigate back to the main page
+        function goBack() {
+            window.location.href = "mainpage.html";
+        }
+    </script>
+</body>
+</html>

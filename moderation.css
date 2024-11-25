@@ -1,0 +1,66 @@
+/* General Layout */
+#moderationList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+/* Moderation Card Styling */
+.moderation-card {
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    transition: box-shadow 0.2s ease;
+}
+
+.moderation-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Header */
+.moderation-card h3 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* Content Styling */
+.moderation-card p {
+    margin: 10px 0;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+/* Action Buttons */
+.moderation-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.moderation-actions button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s ease;
+}
+
+.moderation-actions button:hover {
+    opacity: 0.9;
+}
+
+/* Delete Button */
+.moderation-actions .delete-button {
+    background-color: #dc3545;
+}
+
+.moderation-actions .delete-button:hover {
+    background-color: #c82333;
+}

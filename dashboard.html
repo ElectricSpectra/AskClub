@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    
+    <div class="dashboard-container">
+        <header>
+            <h1>
+                Q&A Dashboard
+                
+            </h1>
+            <button onclick="window.location.href='mainpage.html'">Back to Main Page</button>
+        </header>
+        <div class="stats">
+            <div class="stat-card" id="questionsCount">
+                <h2>Total Questions</h2>
+                <p>0</p>
+            </div>
+            <div class="stat-card" id="answersCount">
+                <h2>Total Answers</h2>
+                <p>0</p>
+            </div>
+            <div class="stat-card" id="dauCount">
+                <h2>Daily Active Users</h2>
+                <p>0</p>
+            </div>
+            <div class="stat-card" id="engagementRate">
+                <h2>Engagement Rate (%)</h2>
+                <p>0%</p>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="mainChart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="mainChart"></canvas>
+        </div>
+    </div>
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>

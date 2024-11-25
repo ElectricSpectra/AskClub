@@ -1,0 +1,102 @@
+:root {
+    --primary-color: #37640d; /* Main green color */
+    --background-color: #dae0e6; /* Light gray background */
+    --sidebar-color: #ffffff; /* White sidebar background */
+    --text-color: #1a1a1b; /* Black text color */
+    --link-hover-color: #f4f4f4; /* Light hover effect */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    height: 100vh; /* Full height */
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.sidebar h2 {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center; /* Align icon and text */
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: var(--link-hover-color);
+}
+
+.sidebar nav ul li a i {
+    font-size: 20px; /* Icon size */
+    margin-right: 10px; /* Space between icon and text */
+    color: var(--primary-color); /* Icon color */
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.auth-btn i {
+    font-size: 18px; /* Icon size */
+    margin-right: 8px;
+}
+
+.auth-btn:hover {
+    background-color: #2a4d09; /* Darker shade on hover */
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: var(--background-color);
+}
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="sidebar.css">
+    <script type="module" src="sidebar.js" defer></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>AskClub</h2>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="mainpage.html">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tags.html">
+                            <i class="fas fa-tags"></i>
+                            <span>Tags</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="dashboard.html">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="myquestions.html">
+                            <i class="fas fa-question-circle"></i>
+                            <span>My Questions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="notifications.html" class="notifications-link">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifications</span>
+                            <span class="notification-badge hidden">0</span>
+                        </a>
+                    </li>
+                    <li id="authButton">
+                        <button class="auth-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="content">
+            <h1>Welcome to AskClub!</h1>
+            <p>Select an option from the sidebar to navigate.</p>
+        </div>
+    </div>
+</body>
+</html>

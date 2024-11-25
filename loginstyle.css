@@ -1,0 +1,77 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Centering the content */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: rgba(184, 182, 182, 0.658);  /* Light gray (#555) to dark gray (#333) to black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: rgba(0, 0, 0, 0.103);
+}
+
+/* Center the content in the middle of the page */
+.content {
+    text-align: center;
+}
+
+/* Main container */
+.container {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px; /* Limits the max width of the container */
+}
+
+/* Image styling */
+.LoginPageKaMoreQuality-removebg-preview {
+    width: 420px; /* Adjust size as needed */
+    height: auto;
+    max-width: 100%;
+    border-radius: 10px; /* Keeps the image with slightly rounded corners */
+    margin-bottom: 20px;
+}
+
+/* Welcome text styling */
+.welcome-text h1 {
+    font-size: 38px;
+    color: #000000;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.highlight {
+    color: #37640d; /* Blue color for highlight */
+}
+
+/* Google login button styling */
+.google-login-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 20px;
+    color: #fff;
+    background-color: #37640d;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    margin-top: -10px;
+}
+
+.google-login-button .google-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}

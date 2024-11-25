@@ -1,0 +1,66 @@
+/* General Layout */
+#notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+/* Notification Card Styling */
+.notification-card {
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.notification-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon Styling */
+.notification-icon {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* Content Styling */
+.notification-content {
+    flex: 1;
+}
+
+.notification-content p {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.timestamp {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Read/Unread Styling */
+.notification-card.read {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.notification-card.unread {
+    font-weight: bold;
+}
+
+/* Error Message Styling */
+.error-message {
+    text-align: center;
+    padding: 15px;
+    background-color: #ffdddd;
+    border-radius: 8px;
+    color: #dc3545;
+}
