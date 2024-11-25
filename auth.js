@@ -47,10 +47,11 @@ function updateUI(user) {
         document.querySelector('.welcome-text h1').innerText = `Welcome, ${user.displayName}!`;
         googleLoginButton.style.display = 'none';
     } else {
-        document.querySelector('.welcome-text h1').innerText = "Welcome to AskClub!";
+        document.querySelector('.welcome-text h1').innerHTML = "Welcome to AskClub – where questions fuel <span class='highlight'>growth</span> & <span class='highlight'>collaboration</span> drives solutions.";
         googleLoginButton.style.display = 'block';
     }
 }
+
 
 // Event listener for the login button
 googleLoginButton.addEventListener('click', loginWithGoogle);
