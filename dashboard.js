@@ -17,7 +17,11 @@ let mainChart;
 
 // Fetch stats for the dashboard
 async function fetchStats() {
+    const loadingIndicator = document.getElementById("loadingIndicator");
     try {
+        // Show loading indicator
+        loadingIndicator.style.display = "flex";
+
         const postsSnapshot = await getDocs(query(collection(db, "posts")));
         const questionsCount = postsSnapshot.size;
 
@@ -77,8 +81,12 @@ async function fetchStats() {
         attachStatListeners(questionsData, answersData, engagementChartData, dauChartData);
     } catch (error) {
         console.error("Error fetching stats:", error);
+    } finally {
+        // Hide loading indicator
+        loadingIndicator.style.display = "none";
     }
 }
+
 
 // Attach event listeners for interactive stats
 function attachStatListeners(questionsData, answersData, engagementChartData, dauChartData) {
