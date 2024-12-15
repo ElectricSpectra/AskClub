@@ -204,30 +204,44 @@ class MessageRenderer {
 
     showChat(chat) {
         if (!chat) {
-            // Handle empty chat case
             if (this.container) this.container.classList.add('hidden');
             if (this.emptyState) this.emptyState.classList.remove('hidden');
-            if (this.youtubeIframe) this.youtubeIframe.src = ''; // Clear the YouTube iframe
+            if (this.youtubeIframe) this.youtubeIframe.src = ''; // Clear the iframe src
             return;
         }
-
-        // Display chat content
+    
         if (this.container) this.container.classList.remove('hidden');
         if (this.emptyState) this.emptyState.classList.add('hidden');
         if (this.chatName) this.chatName.textContent = chat.name || "Untitled Chat";
-
-        // Load YouTube video if link exists
-        if (this.youtubeIframe && chat.youtubeLink) {
-            const videoId = this.extractVideoId(chat.youtubeLink);
-            this.youtubeIframe.src = videoId
-                ? `https://www.youtube.com/embed/${videoId}`
-                : '';
+    
+        // Handle YouTube link
+        if (this.youtubeIframe) {
+            if (chat.youtubeLink) {
+                const videoId = this.extractVideoId(chat.youtubeLink);
+                if (videoId) {
+                    this.youtubeIframe.src = `https://www.youtube.com/embed/${videoId}`;
+                    this.youtubeIframe.style.display = "block"; // Ensure iframe is visible
+                    if (this.youtubeIframe.nextElementSibling) {
+                        this.youtubeIframe.nextElementSibling.remove(); // Remove "No video" message
+                    }
+                } else {
+                    this.youtubeIframe.src = ''; // Clear iframe src if invalid videoId
+                }
+            } else {
+                this.youtubeIframe.src = ''; // Clear iframe src
+                this.youtubeIframe.style.display = "none"; // Hide iframe
+                if (!this.youtubeIframe.nextElementSibling) {
+                    const noVideoMessage = document.createElement("p");
+                    noVideoMessage.className = "no-video-message";
+                    noVideoMessage.textContent = "No video was uploaded";
+                    this.youtubeIframe.parentElement.appendChild(noVideoMessage);
+                }
+            }
         }
-
-        // Render messages
+    
         this.renderMessages(chat.messages || []);
     }
-
+    
     renderMessages(messages) {
         this.messagesList.innerHTML = '';
         messages.forEach((message) => {
