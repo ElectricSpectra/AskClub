@@ -8,7 +8,9 @@ import {
     where,
     orderBy,
     serverTimestamp,
-    onSnapshot
+    onSnapshot,
+    deleteDoc,
+    doc
 } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js";
 
@@ -124,12 +126,28 @@ class ChatService {
 
     async deleteChat(chatId) {
         try {
-            await deleteDoc(doc(db, "events", chatId)); // Delete the chat
-            delete this.chats[chatId]; // Remove from local cache
+            // Delete the chat document from Firestore
+            await deleteDoc(doc(db, "events", chatId));
+    
+            // Remove chat from local cache
+            delete this.chats[chatId];
+    
+            console.log(`Chat ${chatId} successfully deleted.`);
+    
+            // If the current chat was deleted, reset current chat ID
+            if (this.currentChatId === chatId) {
+                this.currentChatId = null;
+            }
+    
+            // Update the UI
+            const chatListRenderer = new ChatListRenderer(); // Reinitialize renderer if needed
+            chatListRenderer.render(this.chats, this.currentChatId);
+    
         } catch (error) {
             console.error("Error deleting chat:", error);
         }
     }
+    
     
 }
 
