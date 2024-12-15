@@ -29,10 +29,8 @@ const auth = getAuth(app);
 async function fetchNotifications(userId) {
     const notificationsContainer = document.getElementById('notifications');
     notificationsContainer.innerHTML = '<p>Loading notifications...</p>';
-    
 
     try {
-        // Query the notifications for the user
         const q = query(
             collection(db, "notifications"),
             where("userId", "==", userId)
@@ -40,11 +38,8 @@ async function fetchNotifications(userId) {
 
         const querySnapshot = await getDocs(q);
 
-        console.log("Fetched notifications count:", querySnapshot.size);
-
         const notifications = querySnapshot.docs
             .map(doc => ({ id: doc.id, ...doc.data() }))
-            // Sort notifications by timestamp
             .sort((a, b) => b.timestamp?.toDate() - a.timestamp?.toDate());
 
         if (notifications.length === 0) {
@@ -64,7 +59,6 @@ async function fetchNotifications(userId) {
             </div>
         `).join('');
 
-        // Add click handlers for notifications
         document.querySelectorAll('.notification-card').forEach(card => {
             card.addEventListener('click', () => {
                 markNotificationAsRead(card.dataset.id);
@@ -75,8 +69,9 @@ async function fetchNotifications(userId) {
             });
         });
 
-        // Update notification badge in sidebar
         updateNotificationBadge(notifications.filter(n => !n.read).length);
+
+        pushBrowserNotifications(notifications);
 
     } catch (error) {
         console.error("Error fetching notifications:", error);
@@ -88,7 +83,42 @@ async function fetchNotifications(userId) {
     }
 }
 
-console.log("Fetched notifications:", notifications); // Debugging log
+// Push browser notifications
+function pushBrowserNotifications(notifications) {
+    if (!('Notification' in window)) {
+        console.warn("This browser does not support desktop notifications.");
+        return;
+    }
+
+    if (Notification.permission !== 'granted') {
+        Notification.requestPermission();
+        return;
+    }
+
+    const pushedNotifications = JSON.parse(localStorage.getItem('pushedNotifications') || '[]');
+    const now = new Date();
+    const oneDayAgo = now.setDate(now.getDate() - 1);
+
+    notifications.filter(n => !pushedNotifications.includes(n.id) && n.timestamp?.toDate() > oneDayAgo)
+        .forEach(notification => {
+            const message = formatNotificationMessage(notification);
+
+            const desktopNotification = new Notification("New Notification", {
+                body: message,
+                icon: "/path/to/notification-icon.png" // Replace with your actual notification icon
+            });
+
+            desktopNotification.onclick = () => {
+                if (notification?.postId) {
+                    window.open(`fullpost.html?postId=${notification.postId}`, '_blank');
+                }
+            };
+
+            pushedNotifications.push(notification.id);
+        });
+
+    localStorage.setItem('pushedNotifications', JSON.stringify(pushedNotifications));
+}
 
 // Get appropriate icon for notification type
 function getNotificationIcon(type) {
@@ -105,7 +135,6 @@ function getNotificationIcon(type) {
 function formatNotificationMessage(notification) {
     return notification.message || 'New notification';
 }
-
 
 // Format the timestamp for display
 function formatTimestamp(timestamp) {
