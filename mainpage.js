@@ -43,7 +43,7 @@ async function createPost(title, content, tags) {
     const toxicityScore = await evaluateContent(content);
     const flagged = toxicityScore && toxicityScore >= 0.7;
 
-    await addDoc(collection(db, "posts"), {
+    const docRef = await addDoc(collection(db, "posts"), {
         title,
         content,
         tags: tags || [],
@@ -57,6 +57,9 @@ async function createPost(title, content, tags) {
         moderationReason: flagged ? "High toxicity score" : null,
         hasAnswers: false
     });
+    
+    const postId = docRef.id; // This is the Firestore-generated post ID
+    console.log("Post created with ID:", postId);
 
     if (flagged) {
         await addDoc(collection(db, "moderationQueue"), {
@@ -66,6 +69,7 @@ async function createPost(title, content, tags) {
             authorId: userId,
             timestamp: new Date(),
             reason: "High toxicity score",
+            postId: postId, // Include the postId in the moderation queue
         });
     }
 
