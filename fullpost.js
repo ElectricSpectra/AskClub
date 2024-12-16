@@ -189,11 +189,11 @@ async function evaluateContent(content) {
 
 async function addAnswer(content) {
     if (!currentUser) {
-        alert('Please sign in to answer');
+        alert("Please sign in to answer");
         return;
     }
     if (!content.trim()) {
-        alert('Please enter some content');
+        alert("Please enter some content");
         return;
     }
 
@@ -215,6 +215,24 @@ async function addAnswer(content) {
             moderationReason: flagged ? "High toxicity score" : null,
         });
 
+        // If the answer is flagged, add it to the moderation queue
+        if (flagged) {
+            await addDoc(collection(db, "moderationQueue"), {
+                type: "Answer",
+                content,
+                postId: postId,
+                answerId: answerRef.id,
+                author: currentUser.displayName || "Anonymous",
+                authorId: currentUser.uid,
+                timestamp: new Date(),
+                reason: "High toxicity score",
+            });
+
+            alert("Your answer has been submitted but flagged for moderation.");
+        } else {
+            alert("Your answer has been submitted successfully.");
+        }
+
         // Fetch the question to get its author's details
         const questionDoc = await getDoc(doc(db, "posts", postId));
         if (questionDoc.exists()) {
@@ -225,13 +243,12 @@ async function addAnswer(content) {
             if (questionAuthorId !== currentUser.uid) {
                 await addDoc(collection(db, "notifications"), {
                     userId: questionAuthorId,
-                    type: 'answer',
+                    type: "answer",
                     questionTitle: questionData.title,
-                    
                     postId: postId,
                     timestamp: new Date(),
                     read: false,
-                    message: "Someone answered your question"
+                    message: "Someone answered your question",
                 });
                 console.log("Notification created for the question's author.");
             }
@@ -241,18 +258,18 @@ async function addAnswer(content) {
         fetchPostDetails();
     } catch (error) {
         console.error("Error adding answer or creating notification:", error);
-        alert('Error adding answer');
+        alert("Error adding answer. Please try again.");
     }
 }
 
 
 async function addReply(answerId, content) {
     if (!currentUser) {
-        alert('Please sign in to reply');
+        alert("Please sign in to reply");
         return;
     }
     if (!content.trim()) {
-        alert('Please enter some content');
+        alert("Please enter some content");
         return;
     }
 
@@ -274,6 +291,25 @@ async function addReply(answerId, content) {
             moderationReason: flagged ? "High toxicity score" : null,
         });
 
+        // If the reply is flagged, add it to the moderation queue
+        if (flagged) {
+            await addDoc(collection(db, "moderationQueue"), {
+                type: "Reply",
+                content,
+                postId: postId,
+                answerId: answerId,
+                replyId: replyRef.id,
+                author: currentUser.displayName || "Anonymous",
+                authorId: currentUser.uid,
+                timestamp: new Date(),
+                reason: "High toxicity score",
+            });
+
+            alert("Your reply has been submitted but flagged for moderation.");
+        } else {
+            alert("Your reply has been submitted successfully.");
+        }
+
         // Fetch the answer to get its author's details
         const answerDoc = await getDoc(doc(db, "posts", postId, "answers", answerId));
         if (answerDoc.exists()) {
@@ -284,13 +320,13 @@ async function addReply(answerId, content) {
             if (answerAuthorId !== currentUser.uid) {
                 await addDoc(collection(db, "notifications"), {
                     userId: answerAuthorId,
-                    type: 'reply',
+                    type: "reply",
                     questionTitle: answerData.content,
                     postId: postId,
                     answerId: answerId,
                     timestamp: new Date(),
                     read: false,
-                    message: "Someone replied to your answer"
+                    message: "Someone replied to your answer",
                 });
                 console.log("Notification created for the answer's author.");
             }
@@ -300,9 +336,10 @@ async function addReply(answerId, content) {
         fetchPostDetails();
     } catch (error) {
         console.error("Error adding reply or creating notification:", error);
-        alert('Error adding reply');
+        alert("Error adding reply. Please try again.");
     }
 }
+
 
 
 
