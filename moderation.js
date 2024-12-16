@@ -14,11 +14,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
+// Update flagged content fetching to include redirection links
 async function fetchFlaggedContent() {
     const moderationList = document.getElementById("moderationList");
     moderationList.innerHTML = "<p>Loading flagged content...</p>";
 
     try {
+        // Fetch all flagged content from the "moderationQueue"
         const flaggedDocs = await getDocs(collection(db, "moderationQueue"));
         const flaggedContent = flaggedDocs.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
@@ -27,47 +30,76 @@ async function fetchFlaggedContent() {
             return;
         }
 
+        // Render the flagged content as cards
         moderationList.innerHTML = flaggedContent.map(content => `
-            <div class="moderation-card">
+            <div class="moderation-card" onclick="redirectToContent('${content.type}', '${content.postId}', '${content.answerId || ""}', '${content.replyId || ""}')">
                 <h3>${content.type}</h3>
                 <p><strong>Content:</strong> ${content.content}</p>
                 <p><strong>Reason:</strong> ${content.reason}</p>
                 <p><strong>Reported By:</strong> ${content.reportedBy || "System (AI)"}</p>
                 <div class="moderation-actions">
-                    <button onclick="deleteContent('${content.id}', '${content.type}', '${content.postId || ""}', '${content.answerId || ""}', '${content.replyId || ""}')">Delete</button>
-                    <button onclick="markAsSafe('${content.id}')">Mark as Safe</button>
+                    <button onclick="event.stopPropagation(); deleteContent('${content.id}', '${content.type}', '${content.postId}', '${content.answerId || ""}', '${content.replyId || ""}')">Delete</button>
+                    <button onclick="event.stopPropagation(); markAsSafe('${content.id}')">Mark as Safe</button>
                 </div>
             </div>
-        `).join("");
+        `).join("");        
     } catch (error) {
         console.error("Error fetching flagged content:", error);
         moderationList.innerHTML = "<p>Error loading content. Please try again later.</p>";
     }
 }
 
-async function deleteContent(id, type, postId = "", answerId = "", replyId = "") {
-    try {
-        await deleteDoc(doc(db, "moderationQueue", id)); // Remove from moderationQueue
 
-        if (type === "Question") {
-            if (!postId) throw new Error("Missing postId for Question.");
-            await deleteDoc(doc(db, "posts", postId));
-        } else if (type === "Answer") {
-            if (!postId || !answerId) throw new Error("Missing postId or answerId for Answer.");
-            await deleteDoc(doc(db, "posts", postId, "answers", answerId));
-        } else if (type === "Reply") {
-            if (!postId || !answerId || !replyId) throw new Error("Missing postId, answerId, or replyId for Reply.");
-            await deleteDoc(doc(db, "posts", postId, "answers", answerId, "replies", replyId));
-        }
-
-        alert(`${type} deleted successfully.`);
-        fetchFlaggedContent(); // Refresh the moderation list
-    } catch (error) {
-        console.error("Error deleting content:", error);
-        alert("Error deleting content. Please check the details and try again.");
+// Redirect based on type and IDs
+function redirectToContent(type, postId, answerId = null, replyId = null) {
+    if (!postId || postId === "undefined") {
+        alert("The post ID is missing or invalid. Cannot redirect.");
+        return;
     }
+
+    let url = `fullpost.html?postId=${postId}`;
+    if (type === "Answer" && answerId) {
+        url += `#answer-${answerId}`;
+    } else if (type === "Reply" && answerId && replyId) {
+        url += `#reply-${replyId}`;
+    }
+
+    console.log("Redirecting to:", url); // Debugging redirection
+    window.location.href = url;
 }
 
+
+
+// Adjust deleteContent for AI-tagged content
+async function deleteContent(id, type, postId = "", answerId = "", replyId = "") {
+    try {
+        // Delete the flagged content from the moderation queue
+        await deleteDoc(doc(db, "moderationQueue", id)); 
+
+        // Delete the flagged content from the main database
+        if (type === "Question" && postId) {
+            // Delete the question from the "posts" collection
+            await deleteDoc(doc(db, "posts", postId));
+        } else if (type === "Answer" && postId && answerId) {
+            // Delete the answer from the nested "answers" subcollection
+            await deleteDoc(doc(db, "posts", postId, "answers", answerId));
+        } else if (type === "Reply" && postId && answerId && replyId) {
+            // Delete the reply from the nested "replies" subcollection
+            await deleteDoc(doc(db, "posts", postId, "answers", answerId, "replies", replyId));
+        } else {
+            throw new Error("Missing necessary IDs for deletion.");
+        }
+
+        // Notify user of success
+        alert(`${type} deleted successfully from both moderation and the database.`);
+        
+        // Refresh the moderation list to reflect the deletion
+        fetchFlaggedContent();
+    } catch (error) {
+        console.error("Error deleting content:", error);
+        alert("Failed to delete content. Please check the details and try again.");
+    }
+}
 
 
 async function markAsSafe(id) {
@@ -85,6 +117,9 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchFlaggedContent();
 });
 
+
 // Expose necessary functions globally for the HTML buttons to work
 window.deleteContent = deleteContent;
 window.markAsSafe = markAsSafe;
+window.redirectToContent = redirectToContent;
+
