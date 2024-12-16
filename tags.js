@@ -149,4 +149,18 @@ async function initializeTagsPage() {
     }
 }
 
+function filterTags() {
+    const searchInput = document.getElementById("tagSearchInput").value.toLowerCase();
+    const tagCards = document.querySelectorAll('.tag-card');
+
+    tagCards.forEach(card => {
+        const tagName = card.querySelector('.tag-name').textContent.toLowerCase();
+        if (tagName.includes(searchInput)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+window.filterTags = filterTags
 document.addEventListener('DOMContentLoaded', initializeTagsPage);
