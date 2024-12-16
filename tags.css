@@ -128,3 +128,14 @@
     color: #666;
     font-style: italic;
   }
+
+#tagSearchInput {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
