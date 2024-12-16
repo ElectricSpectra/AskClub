@@ -188,7 +188,7 @@ function startPeriodicRefresh() {
         if (auth.currentUser) {
             fetchNotifications(auth.currentUser.uid);
         }
-    }, 30000); // Refresh every 30 seconds
+    }, 5000); // Refresh every 30 seconds
 }
 
 // Initialize the page
