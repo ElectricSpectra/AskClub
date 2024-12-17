@@ -371,5 +371,25 @@
       margin: 20px;
     }
   }
+  .chat-item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.delete-chat-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.delete-chat-btn:hover {
+    opacity: 0.7;
+}
+
 
   
