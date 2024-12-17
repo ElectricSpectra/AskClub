@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const appInstance = new App();
             appInstance.init(user.uid);
         } else {
-            window.location.href = "/login.html";
+            window.location.href = "/index.html";
         }
     });
 });
