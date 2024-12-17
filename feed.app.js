@@ -125,12 +125,35 @@ class ChatListRenderer {
         Object.values(chats).forEach((chat) => {
             const chatElement = document.createElement('div');
             chatElement.className = `chat-item${chat.id === currentChatId ? ' active' : ''}`;
-            chatElement.textContent = chat.name;
             chatElement.dataset.chatId = chat.id;
+    
+            // Flex container
+            const flexContainer = document.createElement('div');
+            flexContainer.className = 'chat-item-container';
+    
+            // Chat name
+            const chatName = document.createElement('span');
+            chatName.textContent = chat.name;
+    
+            // Delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '❌';
+            deleteBtn.className = 'delete-chat-btn';
+            deleteBtn.onclick = () => this.handleDeleteChat(chat.id);
+    
+            flexContainer.appendChild(chatName);
+            flexContainer.appendChild(deleteBtn);
+            chatElement.appendChild(flexContainer);
             this.container.appendChild(chatElement);
         });
     }
-
+    
+    handleDeleteChat(chatId) {
+        if (confirm('Are you sure you want to delete this chat?')) {
+            deleteChatFromDB(chatId);
+        }
+    }
+    
     onClick(callback) {
         this.container.addEventListener('click', (e) => {
             const chatItem = e.target.closest('.chat-item');
@@ -138,6 +161,7 @@ class ChatListRenderer {
         });
     }
 }
+
 
 // Message Renderer
 class MessageRenderer {
@@ -335,5 +359,17 @@ class ApiUtils {
             console.error('API Error:', error);
             throw new Error('Failed to get chatbot response');
         }
+    }
+}
+
+async function deleteChatFromDB(chatId) {
+    try {
+        const chatRef = doc(db, "feed", chatId);
+        await deleteDoc(chatRef);
+        alert("Chat deleted successfully.");
+        location.reload(); // Refresh UI to reflect changes
+    } catch (error) {
+        console.error("Error deleting chat:", error);
+        alert("Failed to delete the chat.");
     }
 }
