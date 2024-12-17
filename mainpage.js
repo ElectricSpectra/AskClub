@@ -201,10 +201,6 @@ function renderPosts() {
                 <button class="vote-button downvote-button" ${!currentUser ? 'disabled' : ''}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 20l7-7h-5v-8h-4v8h-5z"/></svg>
                 </button>
-                <button class="comment-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2h-16c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2v-14c0-1.1-.9-2-2-2zm0 16h-5.17l-2.83 2.83-2.83-2.83h-5.17v-14h16v14z"/></svg>
-                    <span>Comment</span>
-                </button>
                 <button class="report-button" onclick="event.stopPropagation(); reportContent('Question', '${post.id}', '${post.content}')">Report</button>
             </div>
         `;
