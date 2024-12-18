@@ -1,6 +1,6 @@
 export async function fetchGeminiAnswer(question) {
     console.log("fetchGeminiAnswer called with question:", question);
-    const apiKey = "AIzaSyCfc4CJC0JhpsvnHI_fppINOS6hD7gsztk"; // Gemini API Key
+    const apiKey = "AIzaSyBYC5leN2Vgd4oEZMoDumvj139Df3T0_XI"; // Gemini API Key
     const apiUrl = "https://generativelanguage.googleapis.com/v1/models/gemini-1.0-pro:generateContent";
 
     try {
