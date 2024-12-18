@@ -26,7 +26,7 @@ const firebaseConfig = {
 };
 
 const config = {
-    GEMINI_API_KEY: 'AIzaSyCfc4CJC0JhpsvnHI_fppINOS6hD7gsztk',
+    GEMINI_API_KEY: 'AIzaSyBYC5leN2Vgd4oEZMoDumvj139Df3T0_XI',
     PDF_WORKER_URL: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js'
 };
 
